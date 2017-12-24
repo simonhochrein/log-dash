@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
@@ -16,7 +17,8 @@ if (typeof files == "string") {
 var lastNames = files.map(function (file) {
     return path.basename(file);
 });
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "public")));
+app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
     res.render('index', {});
 });

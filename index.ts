@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import * as yargs from 'yargs';
 import 'colors';
+import * as path from 'path';
 var pm2 = require('pm2');
 
 var argv = yargs
@@ -16,13 +17,13 @@ var argv = yargs
     })
     .demandCommand(1, 'A command {start,status,stop,restart} is required')
     .demandOption('file', 'The file parameter is required')
+    .default('port', 8888)
     .alias('file', 'f')
     .help('h')
     .alias('help', 'h')
-    .version('0.0.1')
+    .version('0.0.3')
     .epilog('Copyright 2017')
     .argv;
-
 if(argv._[0]) {
     pm2.connect(function(err) {
         if (err) {
@@ -33,7 +34,7 @@ if(argv._[0]) {
             case 'start':
                 console.log("STARTING...".blue);        
                 pm2.start({
-                    script    : 'server.js',
+                    script    : path.join(__dirname, 'server.js'),
                     args: "'"+JSON.stringify(argv)+"'",
                     cwd: process.cwd()
                 }, function(err, apps) {
@@ -45,7 +46,7 @@ if(argv._[0]) {
             case 'restart':
                 console.log("RESTARTING...".blue);
                 pm2.restart({
-                    script    : 'server.js',
+                    script    : path.join(__dirname, 'server.js'),
                     args: "'"+JSON.stringify(argv)+"'",
                     cwd: process.cwd()
                 }, function(err, apps) {

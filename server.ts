@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import * as express from 'express';
 import { setTimeout } from 'timers';
 const app = express();
@@ -22,7 +23,8 @@ var lastNames = files.map(function(file) {
     return path.basename(file);
 })
 
-app.use(express.static(__dirname+"/public"));
+app.use(express.static(path.join(__dirname, "public")));
+app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
     res.render('index', {});

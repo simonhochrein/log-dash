@@ -2,8 +2,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const yargs = require("yargs");
-const path = require('path');
 require("colors");
+const path = require("path");
 var pm2 = require('pm2');
 var argv = yargs
     .usage('Usage: $0 <command> [options]')
@@ -13,20 +13,16 @@ var argv = yargs
     .command('restart', 'Restart log server')
     .example('$0 start --file /var/log/apache2/error.log', 'Start server with specified log')
     .config({
-        port: 8888,
-        file: []
-    })
+    port: 8888,
+    file: []
+})
     .demandCommand(1, 'A command {start,status,stop,restart} is required')
     .demandOption('file', 'The file parameter is required')
-    .option('port', {
-        alias: 'p',
-        describe: 'The port to listen on'
-    })
-    .number('port')
+    .default('port', 8888)
     .alias('file', 'f')
     .help('h')
     .alias('help', 'h')
-    .version('0.0.2')
+    .version('0.0.1')
     .epilog('Copyright 2017')
     .argv;
 if (argv._[0]) {

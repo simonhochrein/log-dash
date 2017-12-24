@@ -12,6 +12,8 @@ To install just run
 ## Usage
 Log-Dash runs as a service. To start it, run `log-dash --file firstFile.log --file secondFile.log`
 
+Log-Dash listens by default on port 8888
+
 Full Usage Below
 ```text
 Usage: log-dash <command> [options]
