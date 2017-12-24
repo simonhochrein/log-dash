@@ -2,6 +2,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const yargs = require("yargs");
+const path = require('path');
 require("colors");
 var pm2 = require('pm2');
 var argv = yargs
@@ -12,15 +13,20 @@ var argv = yargs
     .command('restart', 'Restart log server')
     .example('$0 start --file /var/log/apache2/error.log', 'Start server with specified log')
     .config({
-    port: 8888,
-    file: []
-})
+        port: 8888,
+        file: []
+    })
     .demandCommand(1, 'A command {start,status,stop,restart} is required')
     .demandOption('file', 'The file parameter is required')
+    .option('port', {
+        alias: 'p',
+        describe: 'The port to listen on'
+    })
+    .number('port')
     .alias('file', 'f')
     .help('h')
     .alias('help', 'h')
-    .version('0.0.1')
+    .version('0.0.2')
     .epilog('Copyright 2017')
     .argv;
 if (argv._[0]) {
@@ -33,7 +39,7 @@ if (argv._[0]) {
             case 'start':
                 console.log("STARTING...".blue);
                 pm2.start({
-                    script: 'server.js',
+                    script: path.join(__dirname, 'server.js'),
                     args: "'" + JSON.stringify(argv) + "'",
                     cwd: process.cwd()
                 }, function (err, apps) {
@@ -46,7 +52,7 @@ if (argv._[0]) {
             case 'restart':
                 console.log("RESTARTING...".blue);
                 pm2.restart({
-                    script: 'server.js',
+                    script: path.join(__dirname, 'server.js'),
                     args: "'" + JSON.stringify(argv) + "'",
                     cwd: process.cwd()
                 }, function (err, apps) {
