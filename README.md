@@ -1,26 +1,26 @@
-# Log-View
-![npm version](https://img.shields.io/npm/v/log-view.svg)
+# Log-Dash
+![npm version](https://img.shields.io/npm/v/log-dash.svg)
 
-![screenshot](https://raw.githubusercontent.com/simonhochrein/log-view/master/images/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/simonhochrein/log-dash/master/images/screenshot.png)
 
-Log-View is a simple log viewer with a modern interface.
+Log-Dash is a simple log viewer with a modern interface.
 
 ## Installation
 To install just run
-`npm i -g log-view`
+`npm i -g log-dash`
 
 ## Usage
-Log-View runs as a service. To start it, run `log-view --file firstFile.log --file secondFile.log`
+Log-Dash runs as a service. To start it, run `log-dash --file firstFile.log --file secondFile.log`
 
 Full Usage Below
 ```text
-Usage: log-view <command> [options]
+Usage: log-dash <command> [options]
 
 Commands:
-  log-view start    Start the server
-  log-view status   Current status of the server
-  log-view stop     Stop the server
-  log-view restart  Restart log server
+  log-dash start    Start the server
+  log-dash status   Current status of the server
+  log-dash stop     Stop the server
+  log-dash restart  Restart log server
 
 Options:
   --version   Show version number                                      [boolean]
@@ -28,7 +28,7 @@ Options:
   --file, -f                                                          [required]
 
 Examples:
-  log-view start --file                     Start server with specified log
+  log-dash start --file                     Start server with specified log
   /var/log/apache2/error.log
 
 Copyright 2017

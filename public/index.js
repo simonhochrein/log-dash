@@ -23,7 +23,6 @@ $(function() {
     });
     socket.on('loadLog', function(data) {
         channels[data.channel] = data.logs;
-        console.log(data);
         if(data.channel == getHash()) {
             for(var i = 0; i < data.logs.length; i++) {
                 $('.logs tbody').append(rowTemplate(data.logs[i]));

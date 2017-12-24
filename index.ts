@@ -34,7 +34,8 @@ if(argv._[0]) {
                 console.log("STARTING...".blue);        
                 pm2.start({
                     script    : 'server.js',
-                    args: "'"+JSON.stringify(argv)+"'"
+                    args: "'"+JSON.stringify(argv)+"'",
+                    cwd: process.cwd()
                 }, function(err, apps) {
                     console.log("STARTED".green)
                     pm2.disconnect();
@@ -45,7 +46,8 @@ if(argv._[0]) {
                 console.log("RESTARTING...".blue);
                 pm2.restart({
                     script    : 'server.js',
-                    args: "'"+JSON.stringify(argv)+"'"
+                    args: "'"+JSON.stringify(argv)+"'",
+                    cwd: process.cwd()
                 }, function(err, apps) {
                     console.log("STARTED".green);
                     pm2.disconnect();

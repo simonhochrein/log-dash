@@ -1,5 +1,5 @@
 {
-  "name": "log-view",
+  "name": "log-dash",
   "version": "0.0.1",
   "description": "A Simple Log Viewer",
   "bin": "index.js",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/simonhochrein/log-view.git"
+    "url": "https://github.com/simonhochrein/log-dash.git"
   },
   "devDependencies": {
     "@types/colors": "^1.1.3",
