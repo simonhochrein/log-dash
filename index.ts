@@ -1,63 +1,80 @@
 #!/usr/bin/env node
 import * as yargs from 'yargs';
 import 'colors';
+var pm2 = require('pm2');
 
 var argv = yargs
     .usage('Usage: $0 <command> [options]')
     .command('start', 'Start the server')
+    .command('status', 'Current status of the server')
     .command('stop', 'Stop the server')
-    .example('$0 start', 'Start server with a specified configuration file')
+    .command('restart', 'Restart log server')
+    .example('$0 start --file /var/log/apache2/error.log', 'Start server with specified log')
     .config({
         port: 8888,
         file: []
     })
+    .demandCommand(1, 'A command {start,status,stop,restart} is required')
+    .demandOption('file', 'The file parameter is required')
+    .alias('file', 'f')
     .help('h')
-    .alias('h', 'help')
-    .epilog('copyright 2017')
-    .default(['h'])
+    .alias('help', 'h')
+    .version('0.0.1')
+    .epilog('Copyright 2017')
     .argv;
-var pm2 = require('pm2');
 
-pm2.connect(function(err) {
-    if (err) {
-        console.error(err);
-        process.exit(2);
-    }
-    switch(argv._[0]) {
-        case 'start':
-            pm2.start({
-                script    : 'server.js',
-                args: "'"+JSON.stringify(argv)+"'"
-            }, function(err, apps) {
-                pm2.disconnect();   // Disconnects from PM2
-                if (err) throw err
-            });
-            break;
-        case 'restart':
-            pm2.restart({
-                script    : 'server.js',
-                args: "'"+JSON.stringify(argv)+"'"
-            }, function(err, apps) {
-                pm2.disconnect();   // Disconnects from PM2
-                if (err) throw err
-            });
-            break;
-        case 'status':
-            pm2.describe('server', function(err, description) {
-                if(description[0].pid !== 0) {
-                    console.log("Running".green);
-                } else {
-                    console.log("Stopped".red);
-                }
-                pm2.disconnect();   // Disconnects from PM2
-                if (err) throw err
-            });
-            break;
-        case 'stop':
-            pm2.stop('server', function(err, apps) {
-                pm2.disconnect();   // Disconnects from PM2
-                if (err) throw err
-            });
-            break;
-    }
-});
+if(argv._[0]) {
+    pm2.connect(function(err) {
+        if (err) {
+            console.error(err);
+            process.exit(2);
+        }
+        switch(argv._[0]) {
+            case 'start':
+                console.log("STARTING...".blue);        
+                pm2.start({
+                    script    : 'server.js',
+                    args: "'"+JSON.stringify(argv)+"'"
+                }, function(err, apps) {
+                    console.log("STARTED".green)
+                    pm2.disconnect();
+                    if (err) throw err
+                });
+                break;
+            case 'restart':
+                console.log("RESTARTING...".blue);
+                pm2.restart({
+                    script    : 'server.js',
+                    args: "'"+JSON.stringify(argv)+"'"
+                }, function(err, apps) {
+                    console.log("STARTED".green);
+                    pm2.disconnect();
+                    if (err) throw err
+                });
+                break;
+            case 'status':
+                pm2.describe('server', function(err, description) {
+                    switch(description[0].pm2_env.status) {
+                        case 'errored':
+                        case 'stopped':
+                            console.log(description[0].pm2_env.status.toUpperCase().red);
+                            break;
+                        case 'online':
+                            console.log(description[0].pm2_env.status.toUpperCase().green);                    
+                            break;
+                    }
+                    pm2.disconnect();
+                    if (err) throw err
+                });
+                break;
+            case 'stop':
+                console.log("STOPPING...".blue);
+                pm2.stop('server', function(err, apps) {
+                    console.log("STOPPED".red);
+                    pm2.disconnect();
+                    if (err) throw err
+                });
+                break;
+        }
+    });
+}
