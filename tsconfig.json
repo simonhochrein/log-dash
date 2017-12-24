@@ -1,0 +1,14 @@
+{
+    "compileOnSave": true,
+    "typeAcquisition": {
+        "enable": true
+    },
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2017"
+    },
+    "files": [
+        "index.ts",
+        "server.ts"
+    ]
+}
